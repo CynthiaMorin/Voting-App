@@ -13,7 +13,7 @@ class VotingApp:
         self.root.title("Voting App") #window title for GUI
         
         #Sets a fixed window size
-        self.root.geometry("200x100")
+        self.root.geometry("300x100")
         
         #Makes the GUI non resizable
         self.root.resizable(False, False)
