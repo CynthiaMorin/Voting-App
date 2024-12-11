@@ -1,18 +1,21 @@
+from model import VoterDatabase  #sImports the VoterDatabase class from the model module
+
 class VoteManager:
-    #Initialize the voting class
-    def __init__(self, database):
+    def __init__(self, database: VoterDatabase):
+        """
+        Initialize the vote manager; this will be the database object for managing voter data.
+        """
         self.database = database
-        self.candidates = {"1": "John", "2": "Jane"} #Use keys to represent candidates, for use in the process_vote method
-    
-    def validate_voter_id(self, voter_id: str) -> bool: #Use the true/false method to determine voter ID validity
-        """Ensures the voter ID is all letters."""
-        return voter_id.isalpha()
+        self.candidates = {"1": "John", "2": "Jane"}  #Mapping keys to the two candidate names
 
     def process_vote(self, voter_id: str, candidate_key: str) -> str:
-        """If voter ID is not all letters or has already voted, an error is returned."""
-        if not self.validate_voter_id(voter_id):
-            return "Invalid voter ID. Must contain only letters."
-        if self.database.has_voted(voter_id):
-            return "You have already voted!"
-        self.database.record_vote(voter_id, self.candidates[candidate_key])
-        return f"Vote recorded for {self.candidates[candidate_key]}."
+        """
+        Process a vote, using the voter_id (the unique identifier of the voter), to make sure the voter has not yet voted.
+        candidate_key assigns the key representing the selected candidate.
+        Returns a message indicating outcome of the vote (already voted or successfully voted)
+        """
+        if self.database.has_voted(voter_id): #error handling
+            return f"You have already voted!" 
+        candidate_name = self.candidates.get(candidate_key, "Unknown")
+        self.database.record_vote(voter_id, candidate_name)
+        return f"Vote recorded for {candidate_name}."
